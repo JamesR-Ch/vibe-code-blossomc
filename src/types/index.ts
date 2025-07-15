@@ -3,12 +3,13 @@ export type ServiceType = 'photobooth' | '360video' | 'blessing' | 'horoscope' |
 export interface BaseServiceData {
   serviceType: ServiceType;
   price: number;
+  notes?: string;
 }
 
 export interface PhotoboothData extends BaseServiceData {
   serviceType: 'photobooth';
   hours: number;
-  photoSize: '2x6' | '4x6' | '4x6-blessing' | 'custom';
+  photoSize: '2x6' | '4x6' | '4x6-blessing' | '2x6 อวยพร' | 'custom';
   customPhotoSize?: string;
   location: string;
   setupLocation: string;
@@ -72,6 +73,7 @@ export interface ContractData {
   brideName?: string;
   notes?: string;
   depositAmount?: number;
+  travelFee?: number;
 }
 
 export interface FieldConfig {

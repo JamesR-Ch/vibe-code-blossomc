@@ -106,17 +106,17 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
           <div className="col-span-1 text-center border-r border-gray-800 p-1 font-bold text-xs text-black">
             No.
           </div>
-          <div className="col-span-5 border-r border-gray-800 p-1 font-bold text-xs text-black">
+          <div className="col-span-6 border-r border-gray-800 p-1 font-bold text-xs text-black">
             Description
           </div>
-          <div className="col-span-2 text-center border-r border-gray-800 p-1 font-bold text-xs text-black">
+          <div className="col-span-1 text-center border-r border-gray-800 p-1 font-bold text-xs text-black">
             Quantity
           </div>
           <div className="col-span-2 text-center border-r border-gray-800 p-1 font-bold text-xs text-black">
-            Unit Price
+            Unit Price (THB)
           </div>
           <div className="col-span-2 text-center p-1 font-bold text-xs text-black">
-            Amount
+            Amount (THB)
           </div>
         </div>
 
@@ -127,7 +127,7 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
               <div className="col-span-1 text-center border-r border-gray-800 p-1 text-xs text-black">
                 {index + 1}
               </div>
-              <div className="col-span-5 border-r border-gray-800 p-1">
+              <div className="col-span-6 border-r border-gray-800 p-1">
                 <div className="font-bold text-xs mb-1 text-black">
                   {service.serviceType === "photobooth"
                     ? "Photobooth"
@@ -187,8 +187,14 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
                 <div className="text-xs text-black">
                   จำนวนแขก : {service.guestCount || ""}
                 </div>
+
+                {service.notes && (
+                  <div className="text-xs text-black">
+                    Note : {service.notes}
+                  </div>
+                )}
               </div>
-              <div className="col-span-2 text-center border-r border-gray-800 p-1 text-xs text-black">
+              <div className="col-span-1 text-center border-r border-gray-800 p-1 text-xs text-black">
                 1
               </div>
               <div className="col-span-2 text-right border-r border-gray-800 p-1 text-xs text-black">
@@ -200,6 +206,31 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
             </div>
           </div>
         ))}
+
+        {/* Travel Fee Row */}
+        {contractData.travelFee && contractData.travelFee > 0 && (
+          <div className="border-b border-gray-800">
+            <div className="grid grid-cols-12">
+              <div className="col-span-1 text-center border-r border-gray-800 p-1 text-xs text-black">
+                {contractData.services.length + 1}
+              </div>
+              <div className="col-span-6 border-r border-gray-800 p-1">
+                <div className="font-bold text-xs mb-1 text-black">
+                  ค่าเดินทาง
+                </div>
+              </div>
+              <div className="col-span-1 text-center border-r border-gray-800 p-1 text-xs text-black">
+                1
+              </div>
+              <div className="col-span-2 text-right border-r border-gray-800 p-1 text-xs text-black">
+                {formatCurrency(contractData.travelFee)}
+              </div>
+              <div className="col-span-2 text-right p-1 text-xs text-black">
+                {formatCurrency(contractData.travelFee)}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Payment Terms */}
@@ -225,7 +256,7 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
           <div className="col-span-4">
             <div className="border border-gray-800 p-2">
               <div className="text-center font-bold text-xs mb-1 text-black">
-                ยอดรวมสุทธิ
+                ยอดรวมสุทธิ (บาท)
               </div>
               <div className="text-center text-sm font-bold text-black">
                 {formatCurrency(contractData.totalAmount)}
@@ -250,10 +281,9 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
             3. หากต้องการเพิ่มชั่วโมง มีค่าใช้จ่ายเพิ่มชั่วโมงละ 1,500 บาท
           </div>
           <div>
-            4. ทาง Blossom Pixel ขออนุญาตนำภาพและวิดิโอบางส่วนในงานของลูกค้า
-          </div>
-          <div className="ml-4 text-black">
-            นำไปใช้เผยแพร่ในช่องทางต่างๆของบริษัท เพื่อการประชาสัมพันธ์
+            4. ทาง Blossom Pixel
+            ขออนุญาตนำภาพและวิดิโอบางส่วนในงานของลูกค้าไปใช้เผยแพร่ในช่องทางต่างๆของบริษัท
+            เพื่อการประชาสัมพันธ์
           </div>
         </div>
 

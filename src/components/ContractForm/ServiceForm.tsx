@@ -26,7 +26,9 @@ export const ServiceForm = ({ service, data, onChange, commonData }: ServiceForm
   }, [formData.hours, formData.startTime]);
 
   useEffect(() => {
-    onChange(service.id, { ...formData, ...commonData });
+    // Exclude notes from commonData to prevent overwriting service-specific notes
+    const { notes, ...commonDataWithoutNotes } = commonData;
+    onChange(service.id, { ...formData, ...commonDataWithoutNotes });
   }, [formData, commonData, service.id, onChange]);
 
   const handleFieldChange = (name: string, value: any) => {

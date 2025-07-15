@@ -15,6 +15,7 @@ function App() {
   const [commonData, setCommonData] = useState<Record<string, unknown>>({
     guestCount: 200,
     depositAmount: 3000,
+    travelFee: 0,
   });
   const [customerData, setCustomerData] = useState<Record<string, unknown>>({});
   const [showContract, setShowContract] = useState(false);
@@ -48,16 +49,23 @@ function App() {
       return {
         serviceType: serviceId as ServiceData["serviceType"],
         ...serviceData,
-        ...commonData,
+        // Only spread specific fields from commonData, not the notes field
+        eventDate: commonData.eventDate,
+        guestCount: commonData.guestCount,
+        location: commonData.location,
         price: (serviceData.price as number) || serviceConfig?.basePrice || 0,
+        // Keep service-specific notes separate from common notes
+        notes: (serviceData.notes as string) || undefined,
       } as ServiceData;
     });
 
     const totalAmount = services.reduce(
       (sum, service) => sum + (service.price || 0),
       0
-    );
+    ) + ((commonData.travelFee as number) || 0);
 
+    const travelFee = (commonData.travelFee as number) || 0;
+    
     return {
       services,
       totalAmount,
@@ -68,6 +76,7 @@ function App() {
       brideName: (customerData.brideName as string) || "",
       notes: (commonData.notes as string) || "",
       depositAmount: (commonData.depositAmount as number) || 3000,
+      ...(travelFee > 0 && { travelFee }),
     };
   };
 

@@ -19,7 +19,7 @@ export const CommonForm = ({ data, onChange }: CommonFormProps) => {
       </h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        {commonFields.slice(0, 4).map((field) => (
+        {commonFields.slice(0, 5).map((field) => (
           <FormField
             key={field.name}
             field={field}

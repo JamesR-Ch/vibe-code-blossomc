@@ -13,7 +13,7 @@ export const FormField = ({ field, value, onChange }: FormFieldProps) => {
   const [displayValue, setDisplayValue] = useState('');
 
   useEffect(() => {
-    if (!isFocused && field.type === 'number' && (field.name === 'price' || field.name === 'depositAmount') && value) {
+    if (!isFocused && field.type === 'number' && (field.name === 'price' || field.name === 'depositAmount' || field.name === 'travelFee') && value) {
       setDisplayValue(value.toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
@@ -38,7 +38,7 @@ export const FormField = ({ field, value, onChange }: FormFieldProps) => {
 
   const handleFocus = () => {
     setIsFocused(true);
-    if (field.type === 'number' && (field.name === 'price' || field.name === 'depositAmount')) {
+    if (field.type === 'number' && (field.name === 'price' || field.name === 'depositAmount' || field.name === 'travelFee')) {
       setDisplayValue(value?.toString() || '');
     }
   };
@@ -48,7 +48,7 @@ export const FormField = ({ field, value, onChange }: FormFieldProps) => {
   };
 
   const getInputValue = () => {
-    if (field.type === 'number' && (field.name === 'price' || field.name === 'depositAmount')) {
+    if (field.type === 'number' && (field.name === 'price' || field.name === 'depositAmount' || field.name === 'travelFee')) {
       return isFocused ? displayValue : (value ? value.toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
