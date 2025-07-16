@@ -1,9 +1,13 @@
-export type ServiceType = 'photobooth' | '360video' | 'blessing' | 'horoscope' | 'stickerline';
+export type ServiceType = 'bundle' | 'photobooth' | '360video' | 'blessing' | 'horoscope' | 'stickerline';
 
 export interface BaseServiceData {
   serviceType: ServiceType;
   price: number;
   notes?: string;
+}
+
+export interface BundleData extends BaseServiceData {
+  serviceType: 'bundle';
 }
 
 export interface PhotoboothData extends BaseServiceData {
@@ -61,7 +65,7 @@ export interface StickerlineData extends BaseServiceData {
   location: string;
 }
 
-export type ServiceData = PhotoboothData | Video360Data | BlessingVideoData | HoroscopeData | StickerlineData;
+export type ServiceData = BundleData | PhotoboothData | Video360Data | BlessingVideoData | HoroscopeData | StickerlineData;
 
 export interface ContractData {
   services: ServiceData[];

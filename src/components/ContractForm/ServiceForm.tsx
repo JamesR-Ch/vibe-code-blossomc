@@ -8,9 +8,10 @@ interface ServiceFormProps {
   data: any;
   onChange: (serviceId: string, data: any) => void;
   commonData: any;
+  hasBundleService?: boolean;
 }
 
-export const ServiceForm = ({ service, data, onChange, commonData }: ServiceFormProps) => {
+export const ServiceForm = ({ service, data, onChange, commonData, hasBundleService }: ServiceFormProps) => {
   const [formData, setFormData] = useState({
     serviceType: service.id,
     price: service.basePrice,
@@ -30,6 +31,13 @@ export const ServiceForm = ({ service, data, onChange, commonData }: ServiceForm
     const { notes, ...commonDataWithoutNotes } = commonData;
     onChange(service.id, { ...formData, ...commonDataWithoutNotes });
   }, [formData, commonData, service.id, onChange]);
+
+  useEffect(() => {
+    // Auto-set price to 0 for non-bundle services when bundle service is selected
+    if (hasBundleService && service.id !== 'bundle') {
+      setFormData((prev: any) => ({ ...prev, price: 0 }));
+    }
+  }, [hasBundleService, service.id]);
 
   const handleFieldChange = (name: string, value: any) => {
     setFormData((prev: any) => ({ ...prev, [name]: value }));

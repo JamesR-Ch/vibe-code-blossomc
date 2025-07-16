@@ -128,8 +128,10 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
                 {index + 1}
               </div>
               <div className="col-span-6 border-r border-gray-800 p-1">
-                <div className="font-bold text-xs mb-1 text-black">
-                  {service.serviceType === "photobooth"
+                <div className="font-bold text-xs mb-0 text-black">
+                  {service.serviceType === "bundle"
+                    ? "Bundle Service"
+                    : service.serviceType === "photobooth"
                     ? "Photobooth"
                     : service.serviceType === "360video"
                     ? "360 Video"
@@ -142,25 +144,27 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
                     : "Unknown Service"}
                 </div>
 
-                {service.serviceType !== "stickerline" && (
-                  <>
-                    <div className="text-xs text-black">
-                      จำนวนชั่วโมง : {service.hours || ""}
-                    </div>
-                    <div className="text-xs text-black">
-                      สถานที่ : {service.location || ""}
-                    </div>
-                    <div className="text-xs text-black">
-                      จุดตั้ง: {service.setupLocation || ""}
-                    </div>
-                    <div className="text-xs text-black">
-                      วันที่ : {formatDateDDMMYYYY(service.eventDate) || ""}
-                    </div>
-                    <div className="text-xs text-black">
-                      เวลา : {service.startTime || ""} - {service.endTime || ""}
-                    </div>
-                  </>
-                )}
+                {service.serviceType !== "stickerline" &&
+                  service.serviceType !== "bundle" && (
+                    <>
+                      <div className="text-xs text-black">
+                        จำนวนชั่วโมง : {service.hours || ""}
+                      </div>
+                      <div className="text-xs text-black">
+                        สถานที่ : {service.location || ""}
+                      </div>
+                      <div className="text-xs text-black">
+                        จุดตั้ง: {service.setupLocation || ""}
+                      </div>
+                      <div className="text-xs text-black">
+                        วันที่ : {formatDateDDMMYYYY(service.eventDate) || ""}
+                      </div>
+                      <div className="text-xs text-black">
+                        เวลา : {service.startTime || ""} -{" "}
+                        {service.endTime || ""}
+                      </div>
+                    </>
+                  )}
 
                 {service.serviceType === "photobooth" && (
                   <div className="text-xs text-black">
@@ -184,9 +188,11 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
                   </div>
                 )}
 
-                <div className="text-xs text-black">
-                  จำนวนแขก : {service.guestCount || ""}
-                </div>
+                {service.serviceType !== "bundle" && (
+                  <div className="text-xs text-black">
+                    จำนวนแขก : {service.guestCount || ""}
+                  </div>
+                )}
 
                 {service.notes && (
                   <div className="text-xs text-black">
@@ -198,10 +204,10 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
                 1
               </div>
               <div className="col-span-2 text-right border-r border-gray-800 p-1 text-xs text-black">
-                {formatCurrency(service.price || 0)}
+                {service.price > 0 ? formatCurrency(service.price) : ""}
               </div>
               <div className="col-span-2 text-right p-1 text-xs text-black">
-                {formatCurrency(service.price || 0)}
+                {service.price > 0 ? formatCurrency(service.price) : ""}
               </div>
             </div>
           </div>

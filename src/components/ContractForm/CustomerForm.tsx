@@ -21,13 +21,6 @@ const customerFields = [
     placeholder: "08x-xxx-xxxx",
   },
   {
-    name: "customerEmail",
-    label: "อีเมล",
-    type: "text" as const,
-    required: false,
-    placeholder: "example@email.com",
-  },
-  {
     name: "groomName",
     label: "เจ้าบ่าวคุณ",
     type: "text" as const,
@@ -55,7 +48,7 @@ export const CustomerForm = ({ data, onChange }: CustomerFormProps) => {
         ข้อมูลลูกค้า
       </h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {customerFields.map((field) => (
           <FormField
             key={field.name}

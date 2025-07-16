@@ -2,6 +2,31 @@ import type { ServiceConfig } from "../types";
 
 export const serviceConfigs: ServiceConfig[] = [
   {
+    id: "bundle",
+    name: "Bundle Service",
+    description: "Complete service package",
+    basePrice: 0,
+    defaultValues: {
+      price: 0,
+    },
+    fields: [
+      {
+        name: "price",
+        label: "ราคารวม (บาท)",
+        type: "number",
+        required: false,
+        min: 0,
+      },
+      {
+        name: "notes",
+        label: "Note เพิ่มเติม",
+        type: "text",
+        required: false,
+        placeholder: "Note เพิ่มเติม (ถ้ามี)",
+      },
+    ],
+  },
+  {
     id: "photobooth",
     name: "Photobooth",
     description: "Professional photo booth service",
@@ -60,7 +85,7 @@ export const serviceConfigs: ServiceConfig[] = [
         name: "price",
         label: "ราคา (บาท)",
         type: "number",
-        required: true,
+        required: false,
         min: 0,
       },
       {
@@ -124,7 +149,7 @@ export const serviceConfigs: ServiceConfig[] = [
         name: "price",
         label: "ราคา (บาท)",
         type: "number",
-        required: true,
+        required: false,
         min: 0,
       },
       {
@@ -180,7 +205,7 @@ export const serviceConfigs: ServiceConfig[] = [
         name: "price",
         label: "ราคา (บาท)",
         type: "number",
-        required: true,
+        required: false,
         min: 0,
       },
       {
@@ -236,7 +261,7 @@ export const serviceConfigs: ServiceConfig[] = [
         name: "price",
         label: "ราคา (บาท)",
         type: "number",
-        required: true,
+        required: false,
         min: 0,
       },
       {
@@ -270,7 +295,7 @@ export const serviceConfigs: ServiceConfig[] = [
         name: "price",
         label: "ราคา (บาท)",
         type: "number",
-        required: true,
+        required: false,
         min: 0,
       },
       {

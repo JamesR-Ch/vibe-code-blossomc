@@ -41,26 +41,42 @@ function App() {
   };
 
   const generateContract = (): ContractData => {
+    // Check if bundle service is selected
+    const hasBundleService = selectedServices.some(serviceId => serviceId === "bundle");
+    
     const services: ServiceData[] = selectedServices.map((serviceId, index) => {
       const serviceConfig = getServiceConfig(serviceId);
       const serviceKey = `${serviceId}_${index}`;
       const serviceData = servicesData[serviceKey] || {};
 
+      // If bundle service is present, set price to 0 for non-bundle services
+      const shouldSetPriceToZero = hasBundleService && serviceId !== "bundle";
+      const finalPrice = shouldSetPriceToZero 
+        ? 0 
+        : (serviceData.price as number) ?? serviceConfig?.basePrice ?? 0;
+
       return {
         serviceType: serviceId as ServiceData["serviceType"],
         ...serviceData,
-        // Only spread specific fields from commonData, not the notes field
-        eventDate: commonData.eventDate,
-        guestCount: commonData.guestCount,
-        location: commonData.location,
-        price: (serviceData.price as number) || serviceConfig?.basePrice || 0,
+        // Only spread specific fields from commonData for non-bundle services
+        ...(serviceId !== "bundle" && {
+          eventDate: commonData.eventDate,
+          guestCount: commonData.guestCount,
+          location: commonData.location,
+        }),
+        price: finalPrice,
         // Keep service-specific notes separate from common notes
         notes: (serviceData.notes as string) || undefined,
       } as ServiceData;
+    }).sort((a, b) => {
+      // Sort bundle services first
+      if (a.serviceType === "bundle" && b.serviceType !== "bundle") return -1;
+      if (a.serviceType !== "bundle" && b.serviceType === "bundle") return 1;
+      return 0;
     });
 
     const totalAmount = services.reduce(
-      (sum, service) => sum + (service.price || 0),
+      (sum, service) => sum + (service.price > 0 ? service.price : 0),
       0
     ) + ((commonData.travelFee as number) || 0);
 
@@ -157,6 +173,7 @@ function App() {
                   if (!serviceConfig) return null;
 
                   const serviceKey = `${serviceId}_${index}`;
+                  const hasBundleService = selectedServices.some(id => id === 'bundle');
 
                   return (
                     <div key={serviceKey} className="relative">
@@ -167,6 +184,7 @@ function App() {
                           handleServiceDataChange(serviceKey, data)
                         }
                         commonData={commonData}
+                        hasBundleService={hasBundleService}
                       />
                       <button
                         onClick={() => handleRemoveService(index)}
