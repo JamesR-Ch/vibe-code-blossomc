@@ -29,8 +29,9 @@ export const ServiceForm = ({ service, data, onChange, commonData, hasBundleServ
   useEffect(() => {
     // Exclude notes from commonData to prevent overwriting service-specific notes
     const { notes, ...commonDataWithoutNotes } = commonData;
-    onChange(service.id, { ...formData, ...commonDataWithoutNotes });
-  }, [formData, commonData, service.id, onChange]);
+    const updatedData = { ...formData, ...commonDataWithoutNotes };
+    onChange(service.id, updatedData);
+  }, [formData, commonData, service.id]);
 
   useEffect(() => {
     // Auto-set price to 0 for non-bundle services when bundle service is selected
