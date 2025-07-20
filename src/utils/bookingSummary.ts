@@ -16,7 +16,6 @@ export const formatBookingSummary = (contractData: ContractData): string => {
       case "blessing": return "Blessing Video";
       case "horoscope": return "Horoscope Booth";
       case "stickerline": return "Stickerline";
-      default: return service.serviceType;
     }
   }).join(", ");
   
