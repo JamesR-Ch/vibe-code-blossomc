@@ -5,6 +5,7 @@ import { CommonForm } from "./components/ContractForm/CommonForm";
 import { CustomerForm } from "./components/ContractForm/CustomerForm";
 import { ContractTemplate } from "./components/ContractTemplate/ContractTemplate";
 import { getServiceConfig } from "./services/serviceConfig";
+import { formatBookingSummary, copyToClipboard } from "./utils/bookingSummary";
 import type { ContractData, ServiceData } from "./types";
 
 function App() {
@@ -98,6 +99,17 @@ function App() {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleCopySummary = async () => {
+    const summary = formatBookingSummary(contractData);
+    const success = await copyToClipboard(summary);
+    
+    if (success) {
+      alert("คัดลอกข้อมูลสำเร็จ!");
+    } else {
+      alert("ไม่สามารถคัดลอกข้อมูลได้");
+    }
   };
 
   const contractData = generateContract();
@@ -244,12 +256,20 @@ function App() {
                   {showContract ? "แก้ไขข้อมูล" : "ดูเอกสาร"}
                 </button>
                 {showContract && (
-                  <button
-                    onClick={handlePrint}
-                    className="bg-green-500 hover:bg-green-600 text-white px-3 sm:px-4 py-2 rounded-lg transition duration-200 text-sm sm:text-base font-medium"
-                  >
-                    พิมพ์เอกสาร
-                  </button>
+                  <>
+                    <button
+                      onClick={handleCopySummary}
+                      className="bg-purple-500 hover:bg-purple-600 text-white px-3 sm:px-4 py-2 rounded-lg transition duration-200 text-sm sm:text-base font-medium"
+                    >
+                      คัดลอกสรุป
+                    </button>
+                    <button
+                      onClick={handlePrint}
+                      className="bg-green-500 hover:bg-green-600 text-white px-3 sm:px-4 py-2 rounded-lg transition duration-200 text-sm sm:text-base font-medium"
+                    >
+                      พิมพ์เอกสาร
+                    </button>
+                  </>
                 )}
               </div>
             </div>
