@@ -54,6 +54,37 @@ export const FormField = ({ field, value, onChange }: FormFieldProps) => {
         maximumFractionDigits: 2
       }) : '');
     }
+    
+    // Handle time inputs - ensure HH:MM format for iOS Safari compatibility
+    if (field.type === 'time') {
+      if (!value) return '';
+      // Ensure value is in HH:MM format
+      if (typeof value === 'string' && value.match(/^\d{1,2}:\d{2}$/)) {
+        const [hours, minutes] = value.split(':');
+        return `${hours.padStart(2, '0')}:${minutes}`;
+      }
+      return value;
+    }
+    
+    // Handle date inputs - ensure YYYY-MM-DD format for iOS Safari compatibility
+    if (field.type === 'date') {
+      if (!value) return '';
+      // If value is already in YYYY-MM-DD format, return as is
+      if (typeof value === 'string' && value.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        return value;
+      }
+      // Convert other date formats to YYYY-MM-DD
+      try {
+        const date = new Date(value);
+        if (!isNaN(date.getTime())) {
+          return date.toISOString().split('T')[0];
+        }
+      } catch (e) {
+        console.warn('Invalid date value:', value);
+      }
+      return value;
+    }
+    
     return value || '';
   };
 
@@ -125,11 +156,21 @@ export const FormField = ({ field, value, onChange }: FormFieldProps) => {
         <div className="relative">
           <input
             type={field.type}
-            value={value || ''}
+            value={getInputValue()}
             onChange={handleChange}
             placeholder={field.placeholder}
-            className="w-full px-3 py-2 sm:px-4 sm:py-3 pl-8 sm:pl-10 border border-gray-300 rounded-lg sm:rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400 hover:shadow-md text-sm sm:text-base"
+            className={`w-full px-3 py-2 sm:px-4 sm:py-3 pl-8 sm:pl-10 border border-gray-300 rounded-lg sm:rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400 hover:shadow-md text-sm sm:text-base ${
+              field.type === 'time' || field.type === 'date' ? 'ios-input' : ''
+            }`}
             required={field.required}
+            // iOS-specific attributes for better mobile experience
+            {...(field.type === 'time' && {
+              step: '300', // 5-minute intervals
+              pattern: '[0-9]{2}:[0-9]{2}',
+            })}
+            {...(field.type === 'date' && {
+              pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+            })}
           />
           <div className="absolute inset-y-0 left-0 flex items-center pl-2 sm:pl-3 pointer-events-none">
             <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">

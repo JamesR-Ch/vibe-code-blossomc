@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ServiceSelection } from "./components/ServiceSelection/ServiceSelection";
 import { ServiceForm } from "./components/ContractForm/ServiceForm";
 import { CommonForm } from "./components/ContractForm/CommonForm";
 import { CustomerForm } from "./components/ContractForm/CustomerForm";
 import { ContractTemplate } from "./components/ContractTemplate/ContractTemplate";
+import { FloatingActionButton } from "./components/UI/FloatingActionButton";
 import { getServiceConfig } from "./services/serviceConfig";
 import { formatBookingSummary, copyToClipboard } from "./utils/bookingSummary";
 import type { ContractData, ServiceData } from "./types";
@@ -100,6 +101,21 @@ function App() {
   const handlePrint = () => {
     window.print();
   };
+
+  const handleViewContract = () => {
+    setShowContract(true);
+  };
+
+  const handleBackToForm = () => {
+    setShowContract(false);
+  };
+
+  // Scroll to top when contract view changes
+  useEffect(() => {
+    if (showContract) {
+      window.scrollTo(0, 0);
+    }
+  }, [showContract]);
 
   const handleCopySummary = async () => {
     const summary = formatBookingSummary(contractData);
@@ -225,6 +241,11 @@ function App() {
             display: none !important;
           }
           
+          /* Hide floating action button when printing */
+          .fixed {
+            display: none !important;
+          }
+          
           @page {
             size: A4 portrait;
             margin: 0;
@@ -238,6 +259,44 @@ function App() {
             margin-top: 16pt !important;
           }
         }
+        
+        /* iOS Safari specific fixes for time and date inputs */
+        .ios-input::-webkit-datetime-edit {
+          padding: 0;
+        }
+        
+        .ios-input::-webkit-datetime-edit-fields-wrapper {
+          background: transparent;
+        }
+        
+        .ios-input::-webkit-datetime-edit-text {
+          color: #374151;
+          padding: 0 0.25rem;
+        }
+        
+        .ios-input::-webkit-datetime-edit-month-field,
+        .ios-input::-webkit-datetime-edit-day-field,
+        .ios-input::-webkit-datetime-edit-year-field,
+        .ios-input::-webkit-datetime-edit-hour-field,
+        .ios-input::-webkit-datetime-edit-minute-field {
+          background: transparent;
+          color: #374151;
+          font-weight: normal;
+        }
+        
+        .ios-input::-webkit-calendar-picker-indicator {
+          opacity: 0.6;
+          cursor: pointer;
+        }
+        
+        /* Ensure proper sizing on iOS */
+        @supports (-webkit-touch-callout: none) {
+          .ios-input {
+            min-height: 44px;
+            -webkit-appearance: none;
+            border-radius: 8px;
+          }
+        }
       `}</style>
 
       <div className="min-h-screen bg-gray-50">
@@ -247,31 +306,28 @@ function App() {
               <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
                 Blossom Service App
               </h1>
-              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 lg:space-x-4 w-full sm:w-auto">
-                <button
-                  onClick={() => setShowContract(!showContract)}
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg transition duration-200 text-sm sm:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={selectedServices.length === 0}
-                >
-                  {showContract ? "แก้ไขข้อมูล" : "ดูเอกสาร"}
-                </button>
-                {showContract && (
-                  <>
-                    <button
-                      onClick={handleCopySummary}
-                      className="bg-purple-500 hover:bg-purple-600 text-white px-3 sm:px-4 py-2 rounded-lg transition duration-200 text-sm sm:text-base font-medium"
-                    >
-                      คัดลอกสรุป
-                    </button>
-                    <button
-                      onClick={handlePrint}
-                      className="bg-green-500 hover:bg-green-600 text-white px-3 sm:px-4 py-2 rounded-lg transition duration-200 text-sm sm:text-base font-medium"
-                    >
-                      พิมพ์เอกสาร
-                    </button>
-                  </>
-                )}
-              </div>
+              {showContract && (
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 lg:space-x-4 w-full sm:w-auto">
+                  <button
+                    onClick={handleBackToForm}
+                    className="bg-orange-500 hover:bg-orange-600 text-white px-3 sm:px-4 py-2 rounded-lg transition duration-200 text-sm sm:text-base font-medium"
+                  >
+                    แก้ไขข้อมูล
+                  </button>
+                  <button
+                    onClick={handleCopySummary}
+                    className="bg-purple-500 hover:bg-purple-600 text-white px-3 sm:px-4 py-2 rounded-lg transition duration-200 text-sm sm:text-base font-medium"
+                  >
+                    คัดลอกสรุป
+                  </button>
+                  <button
+                    onClick={handlePrint}
+                    className="bg-green-500 hover:bg-green-600 text-white px-3 sm:px-4 py-2 rounded-lg transition duration-200 text-sm sm:text-base font-medium"
+                  >
+                    พิมพ์เอกสาร
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -339,6 +395,14 @@ function App() {
             </div>
           </div>
         )}
+
+        {/* Floating Action Button */}
+        <FloatingActionButton
+          onViewContract={handleViewContract}
+          onBackToForm={handleBackToForm}
+          showContract={showContract}
+          hasServices={selectedServices.length > 0}
+        />
       </div>
     </>
   );
