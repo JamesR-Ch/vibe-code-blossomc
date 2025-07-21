@@ -26,6 +26,18 @@ function App() {
     setSelectedServices((prev) => [...prev, serviceId]);
   };
 
+  const handleServiceRemove = (serviceId: string) => {
+    setSelectedServices((prev) => {
+      const index = prev.findIndex((id) => id === serviceId);
+      if (index > -1) {
+        const newServices = [...prev];
+        newServices.splice(index, 1);
+        return newServices;
+      }
+      return prev;
+    });
+  };
+
   const handleRemoveService = (index: number) => {
     setSelectedServices((prev) => prev.filter((_, i) => i !== index));
     setServicesData((prev) => {
@@ -337,6 +349,7 @@ function App() {
             <ServiceSelection
               selectedServices={selectedServices}
               onServiceToggle={handleServiceToggle}
+              onServiceRemove={handleServiceRemove}
             />
 
             {selectedServices.length > 0 && (

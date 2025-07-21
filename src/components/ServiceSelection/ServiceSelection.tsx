@@ -4,11 +4,13 @@ import { serviceConfigs } from "../../services/serviceConfig";
 interface ServiceSelectionProps {
   selectedServices: string[];
   onServiceToggle: (serviceId: string) => void;
+  onServiceRemove: (serviceId: string) => void;
 }
 
 export const ServiceSelection = ({
   selectedServices,
   onServiceToggle,
+  onServiceRemove,
 }: ServiceSelectionProps) => {
   const getServiceCounts = () => {
     const counts: Record<string, number> = {};
@@ -38,14 +40,19 @@ export const ServiceSelection = ({
         </h2>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
-        {serviceConfigs.map((service) => (
-          <ServiceCard
-            key={service.id}
-            service={service}
-            isSelected={false}
-            onToggle={onServiceToggle}
-          />
-        ))}
+        {serviceConfigs.map((service) => {
+          const selectionCount = serviceCounts[service.id] || 0;
+          return (
+            <ServiceCard
+              key={service.id}
+              service={service}
+              isSelected={selectionCount > 0}
+              selectionCount={selectionCount}
+              onToggle={onServiceToggle}
+              onRemove={onServiceRemove}
+            />
+          );
+        })}
       </div>
       {selectedServices.length > 0 && (
         <div className="mt-6 sm:mt-8">
