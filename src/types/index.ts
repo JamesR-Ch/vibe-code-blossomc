@@ -1,7 +1,8 @@
-export type ServiceType = 'bundle' | 'photobooth' | '360video' | 'blessing' | 'horoscope' | 'stickerline';
+export type ServiceType = 'bundle' | 'photobooth' | '360video' | 'blessing' | 'horoscope' | 'stickerline' | 'addon';
 
 export interface BaseServiceData {
   serviceType: ServiceType;
+  serviceName?: string;
   price: number;
   notes?: string;
 }
@@ -65,7 +66,21 @@ export interface StickerlineData extends BaseServiceData {
   location: string;
 }
 
-export type ServiceData = BundleData | PhotoboothData | Video360Data | BlessingVideoData | HoroscopeData | StickerlineData;
+export interface AddOnData extends BaseServiceData {
+  serviceType: 'addon';
+  addon1?: string;
+  addonPrice1?: number;
+  addon2?: string;
+  addonPrice2?: number;
+  addon3?: string;
+  addonPrice3?: number;
+  addon4?: string;
+  addonPrice4?: number;
+}
+
+export type ServiceData = BundleData | PhotoboothData | Video360Data | BlessingVideoData | HoroscopeData | StickerlineData | AddOnData;
+
+export type Language = 'th' | 'en';
 
 export interface ContractData {
   services: ServiceData[];

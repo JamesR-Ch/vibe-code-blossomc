@@ -8,8 +8,16 @@ export const serviceConfigs: ServiceConfig[] = [
     basePrice: 0,
     defaultValues: {
       price: 0,
+      serviceName: "Bundle Service",
     },
     fields: [
+      {
+        name: "serviceName",
+        label: "ชื่อบริการ",
+        type: "text",
+        required: false,
+        placeholder: "ชื่อบริการที่แสดงในสัญญา",
+      },
       {
         name: "price",
         label: "ราคารวม (บาท)",
@@ -38,8 +46,16 @@ export const serviceConfigs: ServiceConfig[] = [
       startTime: "18:00",
       endTime: "21:00",
       price: 8900,
+      serviceName: "Photobooth",
     },
     fields: [
+      {
+        name: "serviceName",
+        label: "ชื่อบริการ",
+        type: "text",
+        required: false,
+        placeholder: "ชื่อบริการที่แสดงในสัญญา",
+      },
       {
         name: "hours",
         label: "จำนวนชั่วโมง",
@@ -109,8 +125,16 @@ export const serviceConfigs: ServiceConfig[] = [
       startTime: "18:00",
       endTime: "21:00",
       price: 10900,
+      serviceName: "360 Video",
     },
     fields: [
+      {
+        name: "serviceName",
+        label: "ชื่อบริการ",
+        type: "text",
+        required: false,
+        placeholder: "ชื่อบริการที่แสดงในสัญญา",
+      },
       {
         name: "hours",
         label: "จำนวนชั่วโมง",
@@ -172,8 +196,16 @@ export const serviceConfigs: ServiceConfig[] = [
       startTime: "18:00",
       endTime: "20:00",
       price: 4900,
+      serviceName: "Blessing Video",
     },
     fields: [
+      {
+        name: "serviceName",
+        label: "ชื่อบริการ",
+        type: "text",
+        required: false,
+        placeholder: "ชื่อบริการที่แสดงในสัญญา",
+      },
       {
         name: "hours",
         label: "จำนวนชั่วโมง",
@@ -228,8 +260,16 @@ export const serviceConfigs: ServiceConfig[] = [
       startTime: "18:00",
       endTime: "20:00",
       price: 4900,
+      serviceName: "Horoscope Booth",
     },
     fields: [
+      {
+        name: "serviceName",
+        label: "ชื่อบริการ",
+        type: "text",
+        required: false,
+        placeholder: "ชื่อบริการที่แสดงในสัญญา",
+      },
       {
         name: "hours",
         label: "จำนวนชั่วโมง",
@@ -281,8 +321,16 @@ export const serviceConfigs: ServiceConfig[] = [
     defaultValues: {
       stickerCount: 12,
       price: 1200,
+      serviceName: "Stickerline",
     },
     fields: [
+      {
+        name: "serviceName",
+        label: "ชื่อบริการ",
+        type: "text",
+        required: false,
+        placeholder: "ชื่อบริการที่แสดงในสัญญา",
+      },
       {
         name: "stickerCount",
         label: "จำนวนสติ๊กเกอร์",
@@ -297,6 +345,92 @@ export const serviceConfigs: ServiceConfig[] = [
         type: "number",
         required: false,
         min: 0,
+      },
+      {
+        name: "notes",
+        label: "Note เพิ่มเติม",
+        type: "text",
+        required: false,
+        placeholder: "Note เพิ่มเติม (ถ้ามี)",
+      },
+    ],
+  },
+  {
+    id: "addon",
+    name: "Add-on",
+    description: "Additional services or items",
+    basePrice: 0,
+    defaultValues: {
+      price: 0,
+      serviceName: "Add-on",
+    },
+    fields: [
+      {
+        name: "serviceName",
+        label: "ชื่อบริการ",
+        type: "text",
+        required: false,
+        placeholder: "ชื่อบริการที่แสดงในสัญญา",
+      },
+      {
+        name: "addon1",
+        label: "Add-on (1)",
+        type: "text",
+        required: false,
+        placeholder: "Add-on (1) (ถ้ามี)",
+      },
+      {
+        name: "addonPrice1",
+        label: "ราคา Add-on (1) (บาท)",
+        type: "number",
+        required: false,
+        min: 0,
+        placeholder: "จำนวนเงิน Add-on (1)",
+      },
+      {
+        name: "addon2",
+        label: "Add-on (2)",
+        type: "text",
+        required: false,
+        placeholder: "Add-on (2) (ถ้ามี)",
+      },
+      {
+        name: "addonPrice2",
+        label: "ราคา Add-on (2) (บาท)",
+        type: "number",
+        required: false,
+        min: 0,
+        placeholder: "จำนวนเงิน Add-on (2)",
+      },
+      {
+        name: "addon3",
+        label: "Add-on (3)",
+        type: "text",
+        required: false,
+        placeholder: "Add-on (3) (ถ้ามี)",
+      },
+      {
+        name: "addonPrice3",
+        label: "ราคา Add-on (3) (บาท)",
+        type: "number",
+        required: false,
+        min: 0,
+        placeholder: "จำนวนเงิน Add-on (3)",
+      },
+      {
+        name: "addon4",
+        label: "Add-on (4)",
+        type: "text",
+        required: false,
+        placeholder: "Add-on (4) (ถ้ามี)",
+      },
+      {
+        name: "addonPrice4",
+        label: "ราคา Add-on (4) (บาท)",
+        type: "number",
+        required: false,
+        min: 0,
+        placeholder: "จำนวนเงิน Add-on (4)",
       },
       {
         name: "notes",

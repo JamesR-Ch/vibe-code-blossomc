@@ -9,15 +9,20 @@ A modern, responsive contract management system for Blossom Pixel services. Buil
 - **🎯 Service Selection**: Interactive service cards with contextual icons
 - **📋 Dynamic Forms**: Smart form generation with field validation
 - **📄 Contract Generation**: Professional contract templates with printing support
+- **✏️ Custom Service Names**: Edit service names freely in contract templates
+- **➕ Add-on Support**: Flexible add-on items with individual pricing
+- **🌐 Bilingual Support**: Thai and English language options
 - **⚙️ Configurable**: Easy-to-modify service configurations and pricing
 
 ## 🚀 Services Supported
 
+- **📦 Bundle Service**: Complete service packages with custom pricing
 - **📷 Photobooth**: Professional photo booth with multiple size options
 - **🎥 360 Video**: 360-degree video recording service
 - **💝 Blessing Video**: Video blessing service for special occasions
 - **⭐ Horoscope Booth**: Interactive horoscope and fortune telling
 - **🏷️ Stickerline**: Custom sticker creation service
+- **🎁 Add-on**: Additional services with up to 4 customizable items
 
 ## 🛠️ Tech Stack
 
@@ -89,9 +94,13 @@ Edit `src/services/serviceConfig.ts` to modify:
 
 ## 📋 Default Service Settings
 
-- **Blessing Video**: 2 hours, indoor, 18:00 start, ฿4,900
-- **Horoscope Booth**: 2 hours, indoor, 18:00 start, ฿4,900  
+- **Bundle Service**: Custom pricing, ฿0
+- **Photobooth**: 3 hours, indoor, 18:00-21:00, ฿8,900
+- **360 Video**: 3 hours, indoor, 18:00-21:00, ฿10,900
+- **Blessing Video**: 2 hours, indoor, 18:00-20:00, ฿4,900
+- **Horoscope Booth**: 2 hours, indoor, 18:00-20:00, ฿4,900
 - **Stickerline**: 12 stickers, ฿1,200
+- **Add-on**: Up to 4 custom items with individual pricing, ฿0
 
 ## 🤝 Contributing
 

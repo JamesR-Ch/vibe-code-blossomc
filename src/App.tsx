@@ -6,12 +6,14 @@ import { CustomerForm } from "./components/ContractForm/CustomerForm";
 import { ContractTemplate } from "./components/ContractTemplate/ContractTemplate";
 import { FloatingActionButton } from "./components/UI/FloatingActionButton";
 import { PrintStyles } from "./components/UI/PrintStyles";
+import { LanguageProvider, useLanguage } from "./contexts/LanguageContext";
 import { getServiceConfig } from "./services/serviceConfig";
 import { formatBookingSummary, copyToClipboard } from "./utils/bookingSummary";
 import { generatePdfFilename } from "./utils/formatters";
 import type { ContractData, ServiceData } from "./types";
 
-function App() {
+function AppContent() {
+  const { language, toggleLanguage } = useLanguage();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [servicesData, setServicesData] = useState<
     Record<string, Record<string, unknown>>
@@ -59,7 +61,7 @@ function App() {
   const generateContract = (): ContractData => {
     // Check if bundle service is selected
     const hasBundleService = selectedServices.some(serviceId => serviceId === "bundle");
-    
+
     const services: ServiceData[] = selectedServices.map((serviceId, index) => {
       const serviceConfig = getServiceConfig(serviceId);
       const serviceKey = `${serviceId}_${index}`;
@@ -67,15 +69,15 @@ function App() {
 
       // If bundle service is present, set price to 0 for non-bundle services
       const shouldSetPriceToZero = hasBundleService && serviceId !== "bundle";
-      const finalPrice = shouldSetPriceToZero 
-        ? 0 
+      const finalPrice = shouldSetPriceToZero
+        ? 0
         : (serviceData.price as number) ?? serviceConfig?.basePrice ?? 0;
 
       return {
         serviceType: serviceId as ServiceData["serviceType"],
         ...serviceData,
-        // Only spread specific fields from commonData for non-bundle services
-        ...(serviceId !== "bundle" && {
+        // Only spread specific fields from commonData for non-bundle and non-addon services
+        ...(serviceId !== "bundle" && serviceId !== "addon" && {
           eventDate: commonData.eventDate,
           guestCount: commonData.guestCount,
           location: commonData.location,
@@ -91,8 +93,21 @@ function App() {
       return 0;
     });
 
+    // Calculate total amount including addon prices
     const totalAmount = services.reduce(
-      (sum, service) => sum + (service.price > 0 ? service.price : 0),
+      (sum, service) => {
+        let serviceTotal = service.price > 0 ? service.price : 0;
+
+        // Add addon prices if it's an addon service
+        if (service.serviceType === 'addon') {
+          serviceTotal += (service.addonPrice1 || 0);
+          serviceTotal += (service.addonPrice2 || 0);
+          serviceTotal += (service.addonPrice3 || 0);
+          serviceTotal += (service.addonPrice4 || 0);
+        }
+
+        return sum + serviceTotal;
+      },
       0
     ) + ((commonData.travelFee as number) || 0);
 
@@ -173,6 +188,15 @@ function App() {
               </h1>
               {showContract && (
                 <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 lg:space-x-4 w-full sm:w-auto">
+                  <button
+                    onClick={toggleLanguage}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg transition duration-200 text-sm sm:text-base font-medium flex items-center space-x-2"
+                  >
+                    <span className="text-xs font-bold">{language.toUpperCase()}</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                    </svg>
+                  </button>
                   <button
                     onClick={handleBackToForm}
                     className="bg-orange-500 hover:bg-orange-600 text-white px-3 sm:px-4 py-2 rounded-lg transition duration-200 text-sm sm:text-base font-medium"
@@ -271,6 +295,14 @@ function App() {
         />
       </div>
     </>
+  );
+}
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
 

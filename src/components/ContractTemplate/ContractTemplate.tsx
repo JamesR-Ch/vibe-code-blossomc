@@ -1,5 +1,7 @@
 import type { ContractData } from "../../types";
 import { formatCurrency } from "../../utils/formatters";
+import { useLanguage } from "../../contexts/LanguageContext";
+import { getTranslation, translatePhotoSize } from "../../utils/translations";
 import blossomLogo from "../../assets/blossom-logo.png";
 
 interface ContractTemplateProps {
@@ -7,6 +9,8 @@ interface ContractTemplateProps {
 }
 
 export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
+  const { language } = useLanguage();
+  const t = getTranslation(language);
   const formatDateDDMMYYYY = (dateString: string) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -28,7 +32,7 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
     if (photoSize === "custom" && customPhotoSize) {
       return customPhotoSize;
     }
-    return photoSize;
+    return translatePhotoSize(photoSize, language);
   };
 
   return (
@@ -65,34 +69,34 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
         </div>
 
         <h1 className="text-center text-lg font-bold mb-3 text-black">
-          สัญญาจ้างงาน Blossom Pixel
+          {t.title}
         </h1>
       </div>
 
       {/* Customer Info */}
       <div className="mb-3">
         <div className="grid grid-cols-12 gap-2 mb-1">
-          <div className="col-span-2 text-sm">ชื่อลูกค้า :</div>
+          <div className="col-span-2 text-sm">{t.customerName}</div>
           <div className="col-span-4 border-b border-gray-800 pb-1">
             {contractData.customerName || ""}
           </div>
-          <div className="col-span-2 text-sm">วันที่ออกเอกสาร :</div>
+          <div className="col-span-2 text-sm">{t.documentDate}</div>
           <div className="col-span-4 border-b border-gray-800 pb-1">
             {getTodayDDMMYYYY()}
           </div>
         </div>
         <div className="grid grid-cols-12 gap-2 mb-1">
-          <div className="col-span-2 text-sm">เจ้าบ่าวคุณ :</div>
+          <div className="col-span-2 text-sm">{t.groom}</div>
           <div className="col-span-4 border-b border-gray-800 pb-1">
             {contractData.groomName || ""}
           </div>
-          <div className="col-span-2 text-sm">x เจ้าสาวคุณ</div>
+          <div className="col-span-2 text-sm">{t.bride}</div>
           <div className="col-span-4 border-b border-gray-800 pb-1">
             {contractData.brideName || ""}
           </div>
         </div>
         <div className="grid grid-cols-12 gap-2">
-          <div className="col-span-2 text-sm">เบอร์โทรศัพท์:</div>
+          <div className="col-span-2 text-sm">{t.phone}</div>
           <div className="col-span-10 border-b border-gray-800 pb-1">
             {contractData.customerPhone || ""}
           </div>
@@ -104,19 +108,19 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
         {/* Table Header */}
         <div className="grid grid-cols-12 border-b border-gray-800 bg-white">
           <div className="col-span-1 text-center border-r border-gray-800 p-1 font-bold text-xs text-black">
-            No.
+            {t.no}
           </div>
           <div className="col-span-6 border-r border-gray-800 p-1 font-bold text-xs text-black">
-            Description
+            {t.description}
           </div>
           <div className="col-span-1 text-center border-r border-gray-800 p-1 font-bold text-xs text-black">
-            Quantity
+            {t.quantity}
           </div>
           <div className="col-span-2 text-center border-r border-gray-800 p-1 font-bold text-xs text-black">
-            Unit Price (THB)
+            {t.unitPrice}
           </div>
           <div className="col-span-2 text-center p-1 font-bold text-xs text-black">
-            Amount (THB)
+            {t.amount}
           </div>
         </div>
 
@@ -129,38 +133,41 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
               </div>
               <div className="col-span-6 border-r border-gray-800 p-1">
                 <div className="font-bold text-xs mb-0 text-black">
-                  {service.serviceType === "bundle"
-                    ? "Bundle Service"
+                  {service.serviceName || (service.serviceType === "bundle"
+                    ? t.bundleService
                     : service.serviceType === "photobooth"
-                    ? "Photobooth"
+                    ? t.photobooth
                     : service.serviceType === "360video"
-                    ? "360 Video"
+                    ? t.video360
                     : service.serviceType === "blessing"
-                    ? "Blessing Video"
+                    ? t.blessingVideo
                     : service.serviceType === "horoscope"
-                    ? "Horoscope Booth"
+                    ? t.horoscopeBooth
                     : service.serviceType === "stickerline"
-                    ? "Stickerline"
-                    : "Unknown Service"}
+                    ? t.stickerline
+                    : service.serviceType === "addon"
+                    ? t.addon
+                    : t.unknownService)}
                 </div>
 
                 {service.serviceType !== "stickerline" &&
-                  service.serviceType !== "bundle" && (
+                  service.serviceType !== "bundle" &&
+                  service.serviceType !== "addon" && (
                     <>
                       <div className="text-xs text-black">
-                        จำนวนชั่วโมง : {service.hours || ""}
+                        {t.hours} {service.hours || ""}
                       </div>
                       <div className="text-xs text-black">
-                        สถานที่ : {service.location || ""}
+                        {t.location} {service.location || ""}
                       </div>
                       <div className="text-xs text-black">
-                        จุดตั้ง: {service.setupLocation || ""}
+                        {t.setupLocation} {service.setupLocation || ""}
                       </div>
                       <div className="text-xs text-black">
-                        วันที่ : {formatDateDDMMYYYY(service.eventDate) || ""}
+                        {t.eventDate} {formatDateDDMMYYYY(service.eventDate) || ""}
                       </div>
                       <div className="text-xs text-black">
-                        เวลา : {service.startTime || ""} -{" "}
+                        {t.time} {service.startTime || ""} -{" "}
                         {service.endTime || ""}
                       </div>
                     </>
@@ -168,7 +175,7 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
 
                 {service.serviceType === "photobooth" && (
                   <div className="text-xs text-black">
-                    ขนาดรูป :{" "}
+                    {t.photoSize}{" "}
                     {getPhotoSizeDisplay(
                       service.photoSize,
                       service.customPhotoSize
@@ -178,25 +185,62 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
 
                 {service.serviceType === "360video" && (
                   <div className="text-xs text-black">
-                    Package type : {service.packageType || ""}
+                    {t.packageType} {service.packageType || ""}
                   </div>
                 )}
 
                 {service.serviceType === "stickerline" && (
                   <div className="text-xs text-black">
-                    จำนวนสติ๊กเกอร์ : {service.stickerCount || ""}
+                    {t.stickerCount} {service.stickerCount || ""}
                   </div>
                 )}
 
-                {service.serviceType !== "bundle" && (
+                {service.serviceType === "addon" && (
+                  <>
+                    {service.addon1 && (
+                      <div className="text-xs text-black">
+                        {t.addon1} {service.addon1}
+                        {service.addonPrice1 && service.addonPrice1 > 0 && (
+                          <> = {formatCurrency(service.addonPrice1)} {language === 'th' ? 'บาท' : 'THB'}</>
+                        )}
+                      </div>
+                    )}
+                    {service.addon2 && (
+                      <div className="text-xs text-black">
+                        {t.addon2} {service.addon2}
+                        {service.addonPrice2 && service.addonPrice2 > 0 && (
+                          <> = {formatCurrency(service.addonPrice2)} {language === 'th' ? 'บาท' : 'THB'}</>
+                        )}
+                      </div>
+                    )}
+                    {service.addon3 && (
+                      <div className="text-xs text-black">
+                        {t.addon3} {service.addon3}
+                        {service.addonPrice3 && service.addonPrice3 > 0 && (
+                          <> = {formatCurrency(service.addonPrice3)} {language === 'th' ? 'บาท' : 'THB'}</>
+                        )}
+                      </div>
+                    )}
+                    {service.addon4 && (
+                      <div className="text-xs text-black">
+                        {t.addon4} {service.addon4}
+                        {service.addonPrice4 && service.addonPrice4 > 0 && (
+                          <> = {formatCurrency(service.addonPrice4)} {language === 'th' ? 'บาท' : 'THB'}</>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {service.serviceType !== "bundle" && service.serviceType !== "addon" && (
                   <div className="text-xs text-black">
-                    จำนวนแขก : {service.guestCount || ""}
+                    {t.guestCount} {service.guestCount || ""}
                   </div>
                 )}
 
                 {service.notes && (
                   <div className="text-xs text-black">
-                    Note : {service.notes}
+                    {t.note} {service.notes}
                   </div>
                 )}
               </div>
@@ -204,10 +248,14 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
                 1
               </div>
               <div className="col-span-2 text-right border-r border-gray-800 p-1 text-xs text-black">
-                {service.price > 0 ? formatCurrency(service.price) : ""}
+                {service.serviceType === 'addon'
+                  ? formatCurrency((service.addonPrice1 || 0) + (service.addonPrice2 || 0) + (service.addonPrice3 || 0) + (service.addonPrice4 || 0))
+                  : service.price > 0 ? formatCurrency(service.price) : ""}
               </div>
               <div className="col-span-2 text-right p-1 text-xs text-black">
-                {service.price > 0 ? formatCurrency(service.price) : ""}
+                {service.serviceType === 'addon'
+                  ? formatCurrency((service.addonPrice1 || 0) + (service.addonPrice2 || 0) + (service.addonPrice3 || 0) + (service.addonPrice4 || 0))
+                  : service.price > 0 ? formatCurrency(service.price) : ""}
               </div>
             </div>
           </div>
@@ -222,7 +270,7 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
               </div>
               <div className="col-span-6 border-r border-gray-800 p-1">
                 <div className="font-bold text-xs mb-1 text-black">
-                  ค่าเดินทาง
+                  {t.travelFee}
                 </div>
               </div>
               <div className="col-span-1 text-center border-r border-gray-800 p-1 text-xs text-black">
@@ -244,25 +292,24 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
         <div className="grid grid-cols-12 gap-2 mb-2">
           <div className="col-span-8">
             <div className="font-bold text-xs mb-1 text-black">
-              เงื่อนไขการชำระเงิน:
+              {t.paymentTerms}
             </div>
             <div className="text-xs mb-1 text-black">
-              งวดแรก เงินมัดจำ (จองคิว) ={" "}
-              {formatCurrency(contractData.depositAmount || 3000)} บาท
-              (ชำระแล้ว)
+              {t.deposit}{" "}
+              {formatCurrency(contractData.depositAmount || 3000)} {t.depositPaid}
             </div>
             <div className="text-xs border-b border-gray-800 pb-1 text-black">
-              งวดสุดท้าย หลังจบงานทันที ={" "}
+              {t.finalPayment}{" "}
               {formatCurrency(
                 contractData.totalAmount - (contractData.depositAmount || 3000)
               )}{" "}
-              บาท
+              {language === 'th' ? 'บาท' : 'THB'}
             </div>
           </div>
           <div className="col-span-4">
             <div className="border border-gray-800 p-2">
               <div className="text-center font-bold text-xs mb-1 text-black">
-                ยอดรวมสุทธิ (บาท)
+                {t.totalNet}
               </div>
               <div className="text-center text-sm font-bold text-black">
                 {formatCurrency(contractData.totalAmount)}
@@ -274,29 +321,18 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
 
       {/* Terms and Conditions */}
       <div className="mb-2">
-        <div className="font-bold text-xs mb-1 text-black">หมายเหตุ</div>
+        <div className="font-bold text-xs mb-1 text-black">{t.notes}</div>
         <div className="text-xs space-y-0 text-black">
-          <div>
-            1. กรณีที่ลูกค้าขอยกเลิกงาน ลูกค้าจะไม่ได้รับเงินมัดจำคืนทุกกรณี
-          </div>
-          <div>
-            2. กรณีเกิดความเสียหายของอุปกรณ์จากการใช้บริการ
-            ทางฝ่ายผู้ว่าจ้างจะเป็นผู้รับผิดชอบค่าเสียหายตามจริง
-          </div>
-          <div>
-            3. หากต้องการเพิ่มชั่วโมง มีค่าใช้จ่ายเพิ่มชั่วโมงละ 1,500 บาท
-          </div>
-          <div>
-            4. ทาง Blossom Pixel
-            ขออนุญาตนำภาพและวิดิโอบางส่วนในงานของลูกค้าไปใช้เผยแพร่ในช่องทางต่างๆของบริษัท
-            เพื่อการประชาสัมพันธ์
-          </div>
+          <div>{t.contractTerm1}</div>
+          <div>{t.contractTerm2}</div>
+          <div>{t.contractTerm3}</div>
+          <div>{t.contractTerm4}</div>
         </div>
 
         {contractData.notes && (
           <div className="mt-2">
             <div className="font-bold text-xs mb-1 text-black">
-              หมายเหตุเพิ่มเติม:
+              {t.additionalNotes}
             </div>
             <div className="text-xs whitespace-pre-wrap text-black">
               {contractData.notes}
@@ -310,12 +346,12 @@ export const ContractTemplate = ({ contractData }: ContractTemplateProps) => {
         <div className="grid grid-cols-2 gap-4">
           <div className="text-center">
             <div className="border-b border-gray-400 mb-1 h-8"></div>
-            <div className="text-xs text-black">ผู้ว่าจ้าง</div>
+            <div className="text-xs text-black">{t.employer}</div>
           </div>
           <div className="text-center">
             <div className="text-xs mb-1 text-black">Passkamon P.</div>
             <div className="border-b border-gray-400 mb-1 h-3"></div>
-            <div className="text-xs text-black">ผู้เสนอ</div>
+            <div className="text-xs text-black">{t.proposer}</div>
           </div>
         </div>
       </div>

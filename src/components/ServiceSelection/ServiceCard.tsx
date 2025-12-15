@@ -63,6 +63,9 @@ const ServiceCardComponent = ({
                 ) : service.id === 'stickerline' ? (
                   // Sticker/Tag icon
                   <path fillRule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V3a1 1 0 011-1h7c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                ) : service.id === 'addon' ? (
+                  // Gift/Add-on icon
+                  <path d="M5 5a2 2 0 012-2 3 3 0 013 3h2a3 3 0 013-3 2 2 0 012 2v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5zm4 0a1 1 0 10-2 0v2h2V5zm5 0a1 1 0 00-1-1v2h2V5a1 1 0 00-1-1zM7 8v9h10V8H7z" />
                 ) : (
                   // Default checkmark for other services
                   <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />

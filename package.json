@@ -1,8 +1,8 @@
 {
   "name": "vibe-code-blossomc",
   "private": true,
-  "version": "1.0.0",
-  "description": "A modern, responsive contract management system for Blossom Pixel services",
+  "version": "1.1.0",
+  "description": "A modern, responsive contract management system for Blossom Pixel services with customizable service names and add-on support",
   "type": "module",
   "homepage": "https://github.com/JamesR-Ch/vibe-code-blossomc",
   "repository": {
